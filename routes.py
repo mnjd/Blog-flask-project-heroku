@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.marshmallow import Marshmallow
 from datetime import datetime
 import psycopg2
 import os
@@ -10,7 +9,6 @@ app = Flask(__name__) # create the application instance
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 db = SQLAlchemy(app)
-ma = Marshmallow(app)
 
 class Postblog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -19,19 +17,6 @@ class Postblog(db.Model):
     author = db.Column(db.String(20))
     text = db.Column(db.Text)
     created_at = db.Column(db.DateTime)
-
-class PostListAPIView(ma.Schema):
-    class Meta:
-        fields = ('id', 'title', 'subtitle', 'author', 'text', 'created_at')
-
-postlist = PostListAPIView()
-postlist = PostListAPIView(many=True)
-
-@app.route("/api/v1.0/posts/")
-def get_posts():
-    queryset = Postblog.query.all()
-    posts = postlist.dump(queryset)
-    return jsonify(posts.data)
 
 @app.route("/")
 def list_articles():
