@@ -61,5 +61,12 @@ def create_post():
     db.session.commit()
     return redirect(url_for('list_articles'))
 
+@app.route("/deletepost/<int:id>", methods=['POST'])
+def delete_post(id):
+    post = db.session.query(Postblog).filter(Postblog.id==id).first()
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(url_for('list_articles'))
+
 if __name__ == "__main__":
     app.run()
