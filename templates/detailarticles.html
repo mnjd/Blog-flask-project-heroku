@@ -18,18 +18,16 @@
       </div>
     </header>
 
-    <div class=edit-article>
+    <div class="row">
       <form method="get" action="{{ url_for('edit_post', id=post.id) }}">
         <button class= "btn btn-warning" type="submit">Edit Article</button>
       </form>
-    </div>
-
-    <div class=delete-article>
       <form method="post" action="{{ url_for('delete_post', id=post.id) }}">
-        <button class= "btn btn-warning" type="submit">Delete Article</button>
+        <button class= "btn btn-danger" type="submit">Delete Article</button>
       </form>
     </div>
 
+<br><br>
     <!-- Post Content -->
     <article>
       <div class="container">
