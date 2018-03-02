@@ -61,6 +61,27 @@ def create_post():
     db.session.commit()
     return redirect(url_for('list_articles'))
 
+@app.route("/editpost/<int:id>", methods=['GET', 'POST'])
+def edit_post(id):
+    post = db.session.query(Postblog).filter(Postblog.id==id).first()
+
+    if request.method == 'POST':
+        title = request.form['title']
+        subtitle = request.form['subtitle']
+        author = request.form['author']
+        text = request.form['text']
+
+        post.title = title
+        post.subtitle = subtitle
+        post.author = author
+        post.text = text
+
+        db.session.commit()
+
+        return redirect(url_for('list_articles'))
+    elif request.method == 'GET':
+        return render_template('editarticle.html', post=post)
+
 @app.route("/deletepost/<int:id>", methods=['POST'])
 def delete_post(id):
     post = db.session.query(Postblog).filter(Postblog.id==id).first()

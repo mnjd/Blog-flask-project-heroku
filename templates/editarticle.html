@@ -1,0 +1,69 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('{{ url_for('static', filename='img/contact-bg.jpg') }}')">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="page-heading">
+              <h1>Edit post</h1>
+              <span class="subheading">Create an amazing article today! </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <form name="editPost" id="editPost" method='post' action="{{ url_for('edit_post', id=post.id) }}" novalidate>
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Title</label>
+                <input type="text" class="form-control" placeholder="Title" name="title" value='{{ post.title }}' required data-validation-required-message="Please enter your name.">
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Subtitle</label>
+                <input type="text" class="form-control" placeholder="Subtitle" name="subtitle" value='{{ post.subtitle }}' required data-validation-required-message="Please enter your email address.">
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="form-group col-xs-12 floating-label-form-group controls">
+                <label>Author</label>
+                <input type="text" class="form-control" placeholder="Author" name="author" value='{{ post.author }}' required data-validation-required-message="Please enter your phone number.">
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Your text</label>
+                <textarea rows="5" class="form-control" placeholder="Text" name="text" required data-validation-required-message="Please enter a message.">{{ post.text }}</textarea>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <br>
+            <div id="success"></div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary" id="editPostButton">Edit post</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Contact Form JavaScript -->
+    <script src="{{ url_for('static', filename='js/jqBootstrapValidation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/contact_me.js') }}"></script>
+
+{% endblock %}
