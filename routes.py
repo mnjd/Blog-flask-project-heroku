@@ -41,6 +41,7 @@ def list_articles():
 @app.route("/detailarticles/<int:pk>")
 def detail_articles(pk):
     post = Postblog.query.filter_by(id=pk).one()
+    post.created_at = "{:%b %d, %Y %H:%M}".format(post.created_at)
     return render_template('detailarticles.html', post=post)
 
 @app.route("/createarticle/")
