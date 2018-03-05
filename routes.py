@@ -12,6 +12,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
+
 class Postblog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50))
@@ -20,15 +21,25 @@ class Postblog(db.Model):
     text = db.Column(db.Text)
     created_at = db.Column(db.DateTime)
 
+
+class Weatherdb(db.Model):
+    dateandtime = db.Column(db.DateTime, primary_key=True)
+    city = db.Column(db.String(50))
+    temperature = db.Column(db.Integer)
+    humidity =  db.Column(db.Integer)
+    pressure = db.Column(db.Integer)
+    temperature_ressentie = db.Column(db.Integer)
+    description = db.Column(db.String(50))
+
+
 class PostListAPIView(ma.Schema):
     class Meta:
         fields = ('id', 'title', 'subtitle', 'author', 'text', 'created_at')
 
-postlist = PostListAPIView()
-postlist = PostListAPIView(many=True)
 
 @app.route('/api/v1.0/posts/', methods=['GET'])
 def get_posts():
+    postlist = PostListAPIView(many=True)
     queryset = Postblog.query.all()
     posts = postlist.dump(queryset)
     return jsonify(posts.data)
@@ -36,7 +47,8 @@ def get_posts():
 @app.route("/")
 def list_articles():
     posts = Postblog.query.all()
-    return render_template('listarticles.html', posts=posts)
+    weather = Weatherdb.query.order_by(Weatherdb.dateandtime.desc()).first()
+    return render_template('listarticles.html', posts=posts, weather=weather)
 
 @app.route("/detailarticles/<int:pk>")
 def detail_articles(pk):
