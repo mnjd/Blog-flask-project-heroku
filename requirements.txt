@@ -8,6 +8,8 @@ Jinja2==2.10
 MarkupSafe==1.0
 marshmallow==2.15.0
 psycopg2==2.7.4
+redis==2.10.6
+rq==0.10.0
 six==1.11.0
 SQLAlchemy==1.2.2
 Werkzeug==0.14.1
