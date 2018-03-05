@@ -36,6 +36,7 @@ def get_posts():
 @app.route("/")
 def list_articles():
     posts = Postblog.query.all()
+    post.created_at = "{:%b %d, %Y %H:%M}".format(post.created_at)
     return render_template('listarticles.html', posts=posts)
 
 @app.route("/detailarticles/<int:pk>")
