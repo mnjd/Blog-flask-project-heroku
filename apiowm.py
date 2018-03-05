@@ -34,7 +34,9 @@ def get_data():
     meteo = weather_data('Paris,fr')
     temperature_ressentie = int(13.12 + 0.6215 * float(meteo['main']['temp'] - 273.15) - 11.37 * float(meteo['wind']['speed'] * 3.6) ** 0.16 + 0.3965 * float(meteo['main']['temp'] - 273.15) * float(meteo['wind']['speed'] * 3.6) ** 0.16)
     #--------Connection to database--------#
-    conn = psycopg2.connect(database="blogflask", user="postgres", password="", port=5434)
+    DATABASE_URL = os.environ['DATABASE_URL']
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    #conn = psycopg2.connect(database="blogflask", user="postgres", password="", port=5434)
     #print('Connected to database')
     cur = conn.cursor()
     if conn:
