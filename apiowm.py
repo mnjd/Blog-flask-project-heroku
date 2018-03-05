@@ -32,11 +32,14 @@ def req_data(string):
 
 def get_data():
     meteo = weather_data('Paris,fr')
+    print(meteo)
     temperature_ressentie = int(13.12 + 0.6215 * float(meteo['main']['temp'] - 273.15) - 11.37 * float(meteo['wind']['speed'] * 3.6) ** 0.16 + 0.3965 * float(meteo['main']['temp'] - 273.15) * float(meteo['wind']['speed'] * 3.6) ** 0.16)
+    print(temperature_ressentie)
+    '''
     #--------Connection to database--------#
     DATABASE_URL = os.environ['DATABASE_URL']
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-    #conn = psycopg2.connect(database="blogflask", user="postgres", password="", port=5434)
+    conn = psycopg2.connect(database="blogflask", user="postgres", password="", port=5434)
     #print('Connected to database')
     cur = conn.cursor()
     if conn:
@@ -49,3 +52,4 @@ def get_data():
 
 if __name__ == '__main__':
     get_data()
+    '''
