@@ -35,24 +35,16 @@ def get_data():
     print(meteo)
     temperature_ressentie = int(13.12 + 0.6215 * float(meteo['main']['temp'] - 273.15) - 11.37 * float(meteo['wind']['speed'] * 3.6) ** 0.16 + 0.3965 * float(meteo['main']['temp'] - 273.15) * float(meteo['wind']['speed'] * 3.6) ** 0.16)
     print(temperature_ressentie)
+
     #--------Connection to database--------#
     DATABASE_URL = os.environ['DATABASE_URL']
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-    #conn = psycopg2.connect(database="blogflask", user="postgres", password="", port=5434)
-    #print('Connected to database')
     cur = conn.cursor()
     if conn:
-        print('OK')
-    else:
-        print('NOT OK')
-    '''
         cur.execute("INSERT INTO weatherdb VALUES (%s, %s, %s, %s, %s, %s, %s);", (datetime.now(), meteo['name'], int(round(meteo['main']['temp'] - 273.15)), int(meteo['main']['humidity']), int(meteo['main']['pressure']), temperature_ressentie, meteo['weather'][0]['description']))
         conn.commit()
-        #print('Table updated')
         conn.close()
-        #print('Database closed')
     #--------------------------------------#
 
 if __name__ == '__main__':
     get_data()
-    '''
