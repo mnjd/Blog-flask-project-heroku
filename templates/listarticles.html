@@ -37,7 +37,7 @@
           </h3>
         </a>
         <p class="post-meta">Posted by {{ post.author }}
-          on {{ post.created_at }}
+          on {{ "{:%b %d, %Y %H:%M}".format(post.created_at) }}
         </p>
       </div>
       <hr>

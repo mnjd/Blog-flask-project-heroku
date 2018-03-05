@@ -11,7 +11,7 @@
               <h1> {{ post.title }}</h1>
               <h2 class="subheading">{{ post.subtitle }}</h2>
               <span class="meta">Posted by {{ post.author }}
-                on {{ post.created_at }}</span>
+                on {{ "{:%b %d, %Y %H:%M}".format(post.created_at) }}</span>
             </div>
           </div>
         </div>
