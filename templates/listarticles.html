@@ -10,10 +10,6 @@
           <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
               <h1>Blog Flask</h1>
-              <h2>{{ weather.city }} {{ "{}°C".format(weather.temperature) }} {{ weather.description }}</h2>
-              {% if weather.temperature != weather.temperature_ressentie %}
-              <h3> {{ "Apparent temperature {}°C".format(weather.temperature_ressentie) }}</h3><br>
-              {% endif %}
               <span class="subheading">A cool blog created using flask</span>
             </div>
           </div>
