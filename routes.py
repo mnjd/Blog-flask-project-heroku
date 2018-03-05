@@ -36,11 +36,9 @@ class PostListAPIView(ma.Schema):
     class Meta:
         fields = ('id', 'title', 'subtitle', 'author', 'text', 'created_at')
 
-postlist = PostListAPIView()
-postlist = PostListAPIView(many=True)
-
 @app.route('/api/v1.0/posts/', methods=['GET'])
 def get_posts():
+    postlist = PostListAPIView(many=True)
     queryset = Postblog.query.all()
     posts = postlist.dump(queryset)
     return jsonify(posts.data)
