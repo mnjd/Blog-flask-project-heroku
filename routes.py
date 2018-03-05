@@ -22,14 +22,14 @@ class Postblog(db.Model):
     created_at = db.Column(db.DateTime)
 
 
-#class Weatherdb(db.Model):
-#    dateandtime = db.Column(db.DateTime, primary_key=True)
-#    city = db.Column(db.String(50))
-#    temperature = db.Column(db.Integer)
-#    humidity =  db.Column(db.Integer)
-#    pressure = db.Column(db.Integer)
-#    temperature_ressentie = db.Column(db.Integer)
-#    description = db.Column(db.String(50))
+class Weatherdb(db.Model):
+    dateandtime = db.Column(db.DateTime, primary_key=True)
+    city = db.Column(db.String(50))
+    temperature = db.Column(db.Integer)
+    humidity =  db.Column(db.Integer)
+    pressure = db.Column(db.Integer)
+    temperature_ressentie = db.Column(db.Integer)
+    description = db.Column(db.String(50))
 
 
 class PostListAPIView(ma.Schema):
