@@ -48,8 +48,7 @@ def get_posts():
 @app.route("/")
 def list_articles():
     posts = Postblog.query.all()
-    weather = Weatherdb.query.order_by(Weatherdb.dateandtime.desc()).first()
-    return render_template('listarticles.html', posts=posts, weather=weather)
+    return render_template('listarticles.html', posts=posts)
 
 @app.route("/detailarticles/<int:pk>")
 def detail_articles(pk):
