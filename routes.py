@@ -1,6 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from urllib.parse import urlparse, urljoin
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField
+from wtforms.validators import InputRequired, Email, Length
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import psycopg2
 import os
@@ -8,9 +14,13 @@ import os
 app = Flask(__name__) # create the application instance
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SECRET_KEY'] = '4qNdpAmAhhD$PdKayyNevkh6@&X!@Z&#E%fE2hu5'
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 
 class Postblog(db.Model):
@@ -32,6 +42,26 @@ class Weatherdb(db.Model):
     description = db.Column(db.String(50))
 
 
+class LoginForm(FlaskForm):
+    username = StringField('username', validators=[InputRequired(), Length(min=3, max=15)])
+    password = PasswordField('password', validators=[InputRequired(), Length(min=6, max=80)])
+    remember = BooleanField('remember me')
+
+class RegisterForm(FlaskForm):
+    email = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
+    username = StringField('username', validators=[InputRequired(), Length(min  =3, max=15)])
+    password = PasswordField('password', validators=[InputRequired(), Length(min=6, max=80)])
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(15), unique=True)
+    email = db.Column(db.String(50), unique=True)
+    password = db.Column(db.String(80))
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 class PostListAPIView(ma.Schema):
     class Meta:
         fields = ('id', 'title', 'subtitle', 'author', 'text', 'created_at')
@@ -47,6 +77,41 @@ def get_posts():
 def list_articles():
     posts = Postblog.query.all()
     return render_template('listarticles.html', posts=posts)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                return redirect(url_for('list_articles'))
+
+        return render_template('login.html', form=form)
+
+    session['next'] = request.args.get('next')
+    return render_template('login.html', form=form)
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('list_articles'))
+
+@app.route("/register/", methods = ['GET','POST'])
+def register():
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.password.data, method='sha256')
+        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('list_articles'))
+
+    return render_template('register.html', form=form)
 
 @app.route("/detailarticles/<int:pk>")
 def detail_articles(pk):

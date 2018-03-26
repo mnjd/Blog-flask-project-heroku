@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block content %}
+
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('{{ url_for('static', filename='img/contact-bg.jpg') }}')">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="page-heading">
+              <h1>Login</h1>
+              <span class="subheading">User login </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <form name="addPost" id="addPost" method='POST' action="" novalidate>
+            <div class="control-group">
+              {{ form.hidden_tag() }}
+              {{ wtf.form_field(form.username) }}
+              {{ wtf.form_field(form.password) }}
+              {{ wtf.form_field(form.remember) }}
+            </div>
+            <br>
+            <div id="success"></div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary" id="loginButton">Login</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Contact Form JavaScript -->
+    <script src="{{ url_for('static', filename='js/jqBootstrapValidation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/contact_me.js') }}"></script>
+
+{% endblock %}
