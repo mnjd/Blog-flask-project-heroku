@@ -120,15 +120,18 @@ def register():
     return render_template('register.html', form=form)
 
 @app.route("/detailarticles/<int:pk>")
+@login_required
 def detail_articles(pk):
     post = Postblog.query.filter_by(id=pk).one()
     return render_template('detailarticles.html', post=post)
 
 @app.route("/createarticle/")
+@login_required
 def create_articles():
     return render_template('createarticle.html')
 
 @app.route("/createpost/", methods=['POST'])
+@login_required
 def create_post():
     title = request.form['title']
     subtitle = request.form['subtitle']
@@ -143,6 +146,7 @@ def create_post():
     return redirect(url_for('list_articles'))
 
 @app.route("/editpost/<int:id>", methods=['GET', 'POST'])
+@login_required
 def edit_post(id):
     post = db.session.query(Postblog).filter(Postblog.id==id).first()
 
@@ -164,6 +168,7 @@ def edit_post(id):
         return render_template('editarticle.html', post=post)
 
 @app.route("/deletepost/<int:id>", methods=['POST'])
+@login_required
 def delete_post(id):
     post = db.session.query(Postblog).filter(Postblog.id==id).first()
     db.session.delete(post)
