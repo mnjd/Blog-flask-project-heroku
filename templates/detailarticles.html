@@ -18,6 +18,8 @@
       </div>
     </header>
 
+    {% if current_user.is_authenticated %}
+      {% if post.author == current_user.username %}
     <div class="row">
       <form method="get" action="{{ url_for('edit_post', id=post.id) }}">
         <button class= "btn btn-warning" type="submit">Edit Article</button>
@@ -26,6 +28,8 @@
         <button class= "btn btn-danger" type="submit">Delete Article</button>
       </form>
     </div>
+      {% endif %}
+    {% endif %}
 
 <br><br>
     <!-- Post Content -->
