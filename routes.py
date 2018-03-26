@@ -15,6 +15,7 @@ app = Flask(__name__) # create the application instance
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SECRET_KEY'] = '4qNdpAmAhhD$PdKayyNevkh6@&X!@Z&#E%fE2hu5'
+app.config['USE_SESSION_FOR_NEXT'] = True
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
@@ -93,6 +94,11 @@ def login():
 
     session['next'] = request.args.get('next')
     return render_template('login.html', form=form)
+
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
 @app.route("/logout")
 @login_required
